@@ -42,6 +42,15 @@ const Boton = styled.button`
     }
 `
 
+const Error = styled.div`
+    background-color:red;
+    color:white;
+    padding:1rem;
+    width:100%;
+    text-align:center;
+    margin-botton:2rem;
+`
+
 const Formulario = () => {
 
     const [datos, setDatos] = useState({
@@ -61,8 +70,28 @@ const Formulario = () => {
         })
     }
 
+    //state para ver si hay algun campo vacio 
+    const [error, setError] = useState(false)
+
+    //Cuando el usuario presiona submit 
+    const cotizarSeguro = e => {
+        e.preventDefault();
+
+        //comprar si hay algun campoc vacio 
+        if (marca.trim() === '' || year.trim() === '' || plan.trim() === '') {
+            setError(true)
+            return;
+        }
+
+        //volver el estado a su parte inicial 
+        setError(false)
+    }
+
     return (
-        <form>
+        <form
+            onSubmit={cotizarSeguro}
+        >
+            {error ? <Error>Todos los campos son obligatorios </Error> : null}
             <Campo>
                 <Label>Marca</Label>
                 <Select
@@ -115,7 +144,7 @@ const Formulario = () => {
                 />Completo
             </Campo>
             <Boton
-                type="button"
+                type="submit"
             >Cotizar</Boton>
         </form>
     )
